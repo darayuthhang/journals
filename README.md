@@ -18,6 +18,7 @@ Welcome to Journal Web application Open Source!
     $ pip install -r requirements.txt
   
   2. Run
+  
     $ python manage.py makemigrations
     $ python manage.py migrate
     $ python manage.py runserver
