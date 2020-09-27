@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'edit.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <nav id="nav_bar" class="navbar navbar-dark">
+                <a class="navbar-brand text-dark" href="#">Kh Journal</a>
+                <div class="navbar-nav">
+                    <!-- <a href="{% url 'journal_app:create' %}" class="btn btn-dark">
+                        Update
+                    </a> -->
+                    {% if user.is_authenticated %}
+                    <a id="nav_link" class="nav-link active text-dark" href="{% url 'journal_app:logout'  %}">Logout
+                    </a>
+                    {% else %}
+                    <a id="nav_link" class="nav-link active text-dark" href="{% url 'journal_app:login'  %}">Login </a>
+                    {% endif %}
+                    <a id="nav_link" class="nav-link active text-dark" href="#">About </a>
+        
+                    <a id="nav_link" class="nav-link active text-dark" href="{% url 'journal_app:home'%}">Home </a>
+                </div>
+            </nav>
+        </div>
+
+        
+        
+
+    {% if user.is_authenticated %}
+    <div class="container" id="section">
+        <form id="form" action="{% url 'journal_app:create' %}" method="post">
+            {% csrf_token %}
+    
+            <label for="title" placeholder="title" class="text-dark">
+                Title
+            </label><br>
+            <input type="text" name="title" value={{ journal.title }} ><br>
+    
+            <label for="date" class="text-dark">
+                Date
+            </label><br>
+            <input type="text" name="date" placeholder="mm/dd/years" value={{ journal.date_time }}><br>
+    
+            <label for="text_area" placeholder="textarea">
+                <p class="text-dark">Journal</p>
+            </label><br>
+            <textarea id="text_area" class="form-control" name="text_area" placeholder="Your thoughts...." rows="20"
+                cols="60">{{ journal.text_area }}</textarea>
+            <br>
+            <input type="submit" class="btn btn-dark" value="Update">
+    
+        </form>
+    </div>
+    
+    {% endif %}
+
+    
+    
+          
+    </div>
+</body>
+</html>

@@ -1,0 +1,101 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'list.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <div class="wrapper">
+            
+       
+        <div class="container">
+            <nav id="nav_bar" class="navbar navbar-dark">
+                <a class="navbar-brand text-dark" href="#">Kh Journal</a>
+                <div class="navbar-nav">
+                    <a href="{% url 'journal_app:create' %}" class="btn btn-dark">
+                        create
+                    </a>
+                    {% if user.is_authenticated %}
+                    <a id="nav_link" class="nav-link active text-dark" href="{% url 'journal_app:logout'  %}">Logout
+                    </a>
+                    {% else %}
+                    <a id="nav_link" class="nav-link active text-dark" href="{% url 'journal_app:login'  %}">Login </a>
+                    {% endif %}
+                    <a id="nav_link" class="nav-link active text-dark" href="#">About </a>
+                  
+                    <a id="nav_link" class="nav-link active text-dark" href="{% url 'journal_app:home'%}">Home </a>
+                </div>
+            </nav>
+        </div>
+
+
+   
+
+     
+        
+        
+        {% if user.is_authenticated %}        
+        <div class="container">
+
+       
+        <p id="list_of_journal">List of your journals</p>
+         
+            <div class="row justify-content-md-center" id="section">
+                {% for journal in journal %}
+                <a class="col-sm-3 " href="{% url 'journal_app:view' journal.id %}" >
+                    <div class="row justify-content-md-center text-dark" id="row">{{ journal.title }}</div>
+                    <div class="row justify-content-md-center text-dark" id="row">{{ journal.date_time }}</div>
+                    <div class="row justify-content-md-center text-dark" id="row"><img id="resize_image" src="https://images.unsplash.com/photo-1598808169470-bb051a0cd1fd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=976&q=80"
+                        alt=""></div>
+                </a>
+                {% endfor %}
+            </div>
+          
+            
+           
+        </div>
+            
+        {% endif %}
+        
+
+
+ 
+
+
+      
+
+
+        
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+    
+    
+   
+   
+</body>
+</html>

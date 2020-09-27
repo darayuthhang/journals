@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Are you sure you want to delete your Journal? </h1>
+        <form action="{% url 'journal_app:delete' %}" method="post">
+            {% csrf_token %}
+            <button value="{{journal_id }}" name="journal_id" class="btn btn-danger">Delete</button>
+            <a href="{% url 'journal_app:view' journal_id %}" class="btn btn-primary" style="margin-top: 5px;">cancel</a>
+        </form>
+    </div>
+    
+</body>
+</html>
+

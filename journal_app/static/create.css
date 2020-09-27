@@ -1,0 +1,35 @@
+body{
+    margin: 0;
+    padding: 0; 
+    font-size: 14px;
+    
+}
+
+label{
+    font-size: 30px;
+    margin: 5px;
+}
+.navbar-nav{
+    display: flex;
+    flex-direction: row;
+}
+#nav_bar{
+    opacity: 1;
+}
+ #nav_link{
+    padding: 10px;
+}
+
+#nav_bar{
+    border-radius: 5px;
+    
+}
+
+#section{
+    display: grid;
+    justify-content: center;
+}
+#form{
+    margin-bottom: 15px;
+}
+

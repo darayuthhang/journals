@@ -1,0 +1,54 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css" /> -->
+    <link rel="stylesheet" href="{% static 'register.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+       
+        <form action="{% url 'journal_app:register' %}" method="post">
+            {% csrf_token %}
+            
+            <h2> Sign Up</h2>
+            <!-- <div class="fieldWrapper">
+              
+                <label for="{{ form.sender.id_for_label }}">Your email address:</label>
+                {{ form.username }}
+                
+            </div> -->
+            <label for='email'>
+                Email
+            </label>
+            {{ form.email}}
+            {{ form.email.errors }}
+            <label for="username"
+           
+            >Username</label>
+            {{ form.username }}
+        
+            {{ form.username.errors }}
+        
+            <label for="passsword">Password</label>
+            
+            {{ form.password }}
+         
+            {{ form.password.errors }}
+           
+            
+            <br>
+            <button type="submit" id="btn">Sign up</button>
+        
+        </form>
+    </div>
+   
+    
+
+
+</body>
+</html>
