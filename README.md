@@ -11,3 +11,8 @@ Welcome to Journal Web application Open Source!
 
   Journals application is the social media platform where the users are able to save their own journal,
      and share it on social media 
+
+## Instruction
+  1. install
+  
+     pip install -r requirements.txt
