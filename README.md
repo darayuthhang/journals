@@ -15,4 +15,4 @@ Welcome to Journal Web application Open Source!
 ## Instruction
   1. install
   
-     pip install -r requirements.txt
+    $ pip install -r requirements.txt
