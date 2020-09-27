@@ -3,5 +3,8 @@
 
   
 ## Welcome
-     Journals application is the social media platform where the users are able to save their own journal,
+
+
+
+  Journals application is the social media platform where the users are able to save their own journal,
      and share it on social media 
