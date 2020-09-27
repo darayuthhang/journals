@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
@@ -108,6 +108,9 @@ class JournalView(View):
 
 @method_decorator(login_required, name='dispatch')
 class JournalListView(View):
+    '''
+        JournalLISTView is responsible for listing all the list of journal
+    '''
 
     template_name = "authenticate/list_journal.html"
     
@@ -122,6 +125,10 @@ class JournalListView(View):
 class JournalEditView(View):
     template_name ="authenticate/edit_journal.html"
     
+    '''
+    JournalEditView is responsible for updating the journal 
+    '''
+ 
     def get(self, request, journal_id):
         try:
             journal = Journal.objects.get(id=journal_id)
@@ -129,6 +136,23 @@ class JournalEditView(View):
         except Journal.DoesNotExist:
             raise Http404("Journal does not exist")
         return render(request, self.template_name, context)
+
+    def post(self, request, journal_id):
+        title = request.POST['title']
+        date = request.POST['date']
+        text_area = request.POST['text_area']
+
+        
+        journal = Journal.objects.get(pk=journal_id)
+        
+        journal.title = title
+        journal.date = date
+        journal.text_area = text_area
+        
+        journal.save()
+        
+        return redirect('/journal/list')
+
     
 @method_decorator(login_required, name='dispatch')
 class JournalDisplayTextArea(View):
@@ -139,7 +163,7 @@ class JournalDisplayTextArea(View):
         try:
             journal = Journal.objects.get(id=journal_id)
             context = {'journal': journal}
-            print(context)
+            
         except Journal.DoesNotExist:
             raise Http404('journal does not exist')
         return render(request, self.template_name, context)

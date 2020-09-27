@@ -37,7 +37,7 @@
 
     {% if user.is_authenticated %}
     <div class="container" id="section">
-        <form id="form" action="{% url 'journal_app:create' %}" method="post">
+        <form id="form" action="{% url 'journal_app:edit' journal.id %}" method="post">
             {% csrf_token %}
     
             <label for="title" placeholder="title" class="text-dark">
