@@ -92,3 +92,49 @@ body{
   transform: translate(40px,-40px);		
   opacity: .4;
 }
+
+
+/****** dashboard *****************/
+
+.dashboard{
+  display: grid;
+  grid-template-columns: 1fr;
+
+  border: 1px solid red;
+}
+/*
+  all users cards inside dashboard
+*/
+#all-user-cards{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 30px;
+  justify-self: center; /* position all cards to center */
+}
+#user-card{
+  border: 2px solid rgb(233, 233, 233); /* whitesmoke color */
+  border-radius: 5px;
+}
+/*
+rgb(116,137,157) ->  lightslategray color
+*/
+#container-of-total-number-users{
+  margin: 15px;
+}
+#total-users{
+  margin: 15px;
+  color: rgb(116,137,157); /* lightslategray */
+} 
+#total-user-number-descriptions{
+  color: rgb(116,137,157);/* lightslategray */
+}
+
+#bar-chart1{
+  grid-column-start: 1;
+  grid-column-end: 3;
+  border: 1px solid red;
+}
+
+
+
+
