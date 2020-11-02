@@ -8,7 +8,13 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="{% static 'index.css' %}">
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+   
+
     <title>Document</title>
 </head>
 <body>
@@ -17,8 +23,8 @@
     <div class="image_background">
         <div class="container">
             <nav id="nav_bar" class="navbar navbar-dark ">
-                <a class="navbar-brand text-light" href="#">Kh Journal</a>
-                <div class="navbar-nav">
+                <a id="kh-journal" class="navbar-brand text-light" href="#">Kh Journal</a>
+                <div id="navbar-nav" class="navbar-nav">
                     {% if user.is_authenticated %}
                         <a id="nav_link" class="nav-link active text-light" href="{% url 'journal_app:logout'  %}">Logout </a>
                     {% else %}
@@ -54,16 +60,15 @@
     <!--------DASH BOARD-->
 
     <div class="dashboard">
-        <h1>OverView</h1>
+        <!-- <h1>Current users</h1> -->
         <!------ all user-cards -->
         <div id="all-user-cards">
             
-             
             <div id="user-card">
                 <p id="total-users">Total users</p>
                 <hr>
                 <div id="container-of-total-number-users">
-                    <p id="total-number-of-users"> #adfsd </p>
+                    <p id="total-number-of-users"> {{ total_users }} </p>
                     <p id="total-user-number-descriptions">Total users -Until Today 1.0# since previous
                         <br> month
                     </p>
@@ -71,42 +76,48 @@
             </div>
 
             <div id="user-card">
-                <p id="total-users">Total users</p>
+                <p id="total-users">User this month</p>
                 <hr>
                 <div id="container-of-total-number-users">
                     <p id="total-number-of-users"> #adfsd </p>
-                    <p id="total-user-number-descriptions">Total users -Until Today 1.0# since previous
+                    <p id="total-user-number-descriptions">Total users - this month % since previous
                         <br> month
                     </p>
                 </div>
             </div>
 
             <div id="user-card">
-                <p id="total-users">Total users</p>
+                <p id="total-users">New users</p>
                 <hr>
                 <div id="container-of-total-number-users">
                     <p id="total-number-of-users"> #adfsd </p>
-                    <p id="total-user-number-descriptions">Total users -Until Today 1.0# since previous
+                    <p id="total-user-number-descriptions">New users - this month 1.0# since previous
                         <br> month
                     </p>
                 </div>
             </div>
 
             <div id="user-card">
-                <p id="total-users">Total users</p>
+                <p id="total-users">Total sessions</p>
                 <hr>
                 <div id="container-of-total-number-users">
                     <p id="total-number-of-users"> #adfsd </p>
-                    <p id="total-user-number-descriptions">Total users -Until Today 1.0# since previous
+                    <p id="total-user-number-descriptions">Total sessions - this month 1.0# since previous
                         <br> month
                     </p>
                 </div>
             </div>
-
-            <div id="bar-chart1">1</div>
-                
-          
             
+            <div id="line-chart">
+                <canvas id="myChart" ></canvas>
+                <script type="module" src="{% static 'javascript/lineChart.js' %}"></script>
+            </div>
+            
+            <div id="pie-chart">
+                <canvas id="pieChart"></canvas>
+                <script type="module" src="{% static 'javascript/pieChart.js' %}"></script>
+            </div>
+            <script type="module" src="{% static 'javascript/dashBoard.js' %}"></script>
             
         </div>
 
@@ -118,8 +129,7 @@
 
 </div>
 
-
-
+  
 
 </body>
 </html>

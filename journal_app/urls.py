@@ -4,7 +4,9 @@ from journal_app.views import (
     LoginView, JournalView, 
     JournalListView, JournalEditView, 
     JournalDisplayTextArea, JournalDeleteView, 
-    delete_view, JournalResetPassword,JournalUpdatePassword)
+    delete_view, JournalResetPassword,JournalUpdatePassword,
+    JournalDashBoard
+    )
 from . import views
 
 
@@ -36,6 +38,9 @@ urlpatterns = [
     #journal/reset_password/
     path('reset_password/', JournalResetPassword.as_view(), name="reset_password"),
     #journal/update_password/
-    path('update_password/', JournalUpdatePassword.as_view(), name="updatepassword")
+    path('update_password/', JournalUpdatePassword.as_view(), name="updatepassword"),
+    
+    #journal/dashboard/data
+    path('dashboard/data', JournalDashBoard.as_view(), name="dasboard")
 
 ]

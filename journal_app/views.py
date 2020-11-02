@@ -8,18 +8,40 @@ from django.contrib.auth.models import User
 
 from .models import Journal
 
+
 from django.views import View
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.urls import reverse
 
 from .forms import UserForm
+import json
 # Create your views here.
 
 
 class MyView(View):
+
     def get(self, request):
+        # if journal database is not empty,
+        # if it is empty return
+        # try catch exception
+        # user = User.objects.all()
+        # total_users = user.count()
+        # # if total_users equal 0, return
+        # # 0 total users to index.html
+        # if total_users == 0:
+        #     context = {
+        #         'total_users': total_users
+        #     }
+        #     # journal is empty
+        #     # return 0 user to index.html
+        #     return render(request, "index.html", context)
+        # # else return all exist users inside database
+        # # to index.html
+        # context = {
+        #     'total_users': total_users
+        # }
         return render(request, "index.html")
 
 
@@ -28,17 +50,18 @@ class RegisterView(View):
         RegisterView accepts the post request from sign up form.
     '''
     template_name = "register.html"
-    
+
     def get(self, request):
         form = UserForm()
         return render(request, self.template_name, {'form': form})
-    
+
     @csrf_exempt
     def post(self, request):
-        form = UserForm(request.POST or None) 
-        # In the 'form' class the clean function  
-        # is defined, if all the data is correct  
-        # as per the clean function, it returns true 
+
+        form = UserForm(request.POST or None)
+        # In the 'form' class the clean function
+        # is defined, if all the data is correct
+        # as per the clean function, it returns true
         if form.is_valid():
             user = form.save()
             user.set_password(user.password)
@@ -46,7 +69,27 @@ class RegisterView(View):
             # redirect it to some another page indicating data
             # is sucessfully inserted.
             return redirect('/journal/home')
+            # return JsonResponse({}, status=200)
         return render(request, self.template_name, {'form': form})
+    # @csrf_exempt
+    # def post(self, request):
+    #     data = json.loads(request.body)
+    #     # In the 'form' class the clean function
+    #     # is defined, if all the data is correct
+    #     # as per the clean function, it returns true
+    #     if data is not None:
+    #         username = data['username']
+    #         password = data['password']
+    #         email = data['email']
+
+    #         user = User.objects.create_user(username, email, password)
+    #         user.save()
+    #         user.set_password(user.password)
+    #         user.save()
+    #         # redirect it to some another page indicating data
+    #         # is sucessfully inserted.
+    #         return redirect('/journal/home')
+    #     return render(request, self.template_name)
 
 
 class LoginView(View):
@@ -65,9 +108,9 @@ class LoginView(View):
         username = request.session['username'] = request.POST['username']
         password = request.session['password'] = request.POST['password']
 
-        
-        # authenticate user if user does not exist, return HTTResponse    
-        user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
+        # authenticate user if user does not exist, return HTTResponse
+        user = authenticate(
+            request, username=request.POST['username'], password=request.POST['password'])
         if user:
             if user is not None:
                 login(request, user)
@@ -77,34 +120,36 @@ class LoginView(View):
         else:
             print("Username: {} and password {}".format(username, password))
             return HttpResponse("Invalid")
-        return render(request, self.template_name, context)
-       
-    
+        return render(request, self.template_name)
+
+
 @login_required
 def user_logout(request):
     logout(request)
     return redirect('/journal/home/')
-  
+
+
 @method_decorator(login_required, name='dispatch')
 class JournalView(View):
     '''
         JournalView accept text journal from the user
     '''
     template_name = "authenticate/create_journal.html"
+
     def get(self, request):
         return render(request, self.template_name, {})
-    
 
     def post(self, request):
         title = request.POST['title']
         date = request.POST['date']
         text_area = request.POST['text_area']
 
-
-        journal = Journal(user=request.user, title=title, text_area=text_area, date=date)
+        journal = Journal(user=request.user, title=title,
+                          text_area=text_area, date=date)
 
         journal.save()
         return redirect('/journal/list')
+
 
 @method_decorator(login_required, name='dispatch')
 class JournalListView(View):
@@ -113,22 +158,22 @@ class JournalListView(View):
     '''
 
     template_name = "authenticate/list_journal.html"
-    
+
     def get(self, request):
         journal = Journal.objects.filter(user=request.user)
-       
+
         context = {'journal': journal}
         return render(request, self.template_name, context)
 
 
 @method_decorator(login_required, name='dispatch')
 class JournalEditView(View):
-    template_name ="authenticate/edit_journal.html"
-    
+    template_name = "authenticate/edit_journal.html"
+
     '''
     JournalEditView is responsible for updating the journal 
     '''
- 
+
     def get(self, request, journal_id):
         try:
             journal = Journal.objects.get(id=journal_id)
@@ -142,32 +187,29 @@ class JournalEditView(View):
         date = request.POST['date']
         text_area = request.POST['text_area']
 
-        
         journal = Journal.objects.get(pk=journal_id)
-        
+
         journal.title = title
         journal.date = date
         journal.text_area = text_area
-        
+
         journal.save()
-        
+
         return redirect('/journal/list')
 
-    
+
 @method_decorator(login_required, name='dispatch')
 class JournalDisplayTextArea(View):
     template_name = "authenticate/display.html"
-
 
     def get(self, request, journal_id):
         try:
             journal = Journal.objects.get(id=journal_id)
             context = {'journal': journal}
-            
+
         except Journal.DoesNotExist:
             raise Http404('journal does not exist')
         return render(request, self.template_name, context)
-
 
 
 @method_decorator(login_required, name='dispatch')
@@ -177,6 +219,7 @@ class JournalDeleteView(View):
         @JournalDeleteView is responsible for deleting journal after user hit delete button
 
     '''
+
     def post(self, request):
         try:
             journal_id = request.POST['journal_id']
@@ -185,7 +228,8 @@ class JournalDeleteView(View):
         except Journal.DoesNotExist:
             raise Http404('journal does not exist')
         return redirect('/journal/list')
-    
+
+
 @login_required
 def delete_view(request, journal_id):
     return render(request, 'authenticate/delete.html', {'journal_id': journal_id})
@@ -200,7 +244,6 @@ class JournalResetPassword(View):
 
     def get(self, request):
         return render(request, self.template_name, {})
-    
 
     def post(self, request):
         try:
@@ -210,19 +253,18 @@ class JournalResetPassword(View):
             ROUTE_UPDATE_PASSWORD = "http://127.0.0.1:8000/journal/update_password/"
             HOST_EMAIL = "khjournals@gmail.com"
 
-
             send_mail(
-            subject = 'From Kh Journals',
-            message = ROUTE_UPDATE_PASSWORD,
-            from_email = HOST_EMAIL,
-            recipient_list = [email,],
-            fail_silently = False,
-            )        
-            
+                subject='From Kh Journals',
+                message=ROUTE_UPDATE_PASSWORD,
+                from_email=HOST_EMAIL,
+                recipient_list=[email, ],
+                fail_silently=False,
+            )
+
         except User.DoesNotExist:
             raise Http404("User does not exists")
         return redirect('/journal/home/')
-        
+
 
 class JournalUpdatePassword(View):
     template_name = "account/update_password.html"
@@ -231,7 +273,7 @@ class JournalUpdatePassword(View):
         JournalUpdatePassword is responsible for updating, or reseting user password 
         after user receive email to reset password.
     '''
-    
+
     def get(self, request):
         return render(request, self.template_name, {})
 
@@ -239,7 +281,7 @@ class JournalUpdatePassword(View):
 
         password = request.POST['new_password']
         email = request.session['email']
-        
+
         if not email:
             user = User.objects.get(email=email)
             user.password = password
@@ -248,26 +290,29 @@ class JournalUpdatePassword(View):
             user.save()
             return redirect("/journal/home")
         return HttpResponse("There is no nothing to update")
-    
-
-        
-    
 
 
-    
+class JournalDashBoard(View):
+    '''
+        @description    - Pull user data from database, and 
+                          return total number of users.
+        @request        - Containing Http request method GET
+        @return         - Return data as json     
+    '''
 
+    def get(self, request):
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
+        # pull data from data base
+        user = User.objects.all()
+        # count how many users in database.
+        data = {
+            'total_users': user.count(),
+            'valid': False
+        }
+        # if total_users == 0
+        # return JsonResponse with total of users 0
+        if data['total_users'] == 0:
+            data['total_users'] = 0
+            return JsonResponse(data, status=200)
+        data['valid'] = True
+        return JsonResponse(data, status=200)

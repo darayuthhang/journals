@@ -12,7 +12,8 @@
 <body>
     <div class="container">
        
-        <form action="{% url 'journal_app:register' %}" method="post">
+        <!-- <form action="{% url 'journal_app:register' %}" method="post"> -->
+            <form method = "post" id="user-form">
             {% csrf_token %}
             
             <h2> Sign Up</h2>
@@ -25,6 +26,7 @@
             <label for='email'>
                 Email
             </label>
+            <!-- <input type="email" name="email" id="email"> -->
             {{ form.email}}
             {{ form.email.errors }}
             <label for="username"
@@ -33,9 +35,11 @@
             {{ form.username }}
         
             {{ form.username.errors }}
-        
-            <label for="passsword">Password</label>
+            <!-- <input type="text" name="username" id="username"> -->
             
+            
+            <label for="passsword">Password</label>
+            <!-- <input type="password" name="password" id="password"> -->
             {{ form.password }}
          
             {{ form.password.errors }}
@@ -43,10 +47,11 @@
             
             <br>
             <button type="submit" id="btn">Sign up</button>
-        
+            <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+            <script src="{% static 'javascript/sendCredential.js' %}"></script>
         </form>
     </div>
-   
+    
     
 
 
